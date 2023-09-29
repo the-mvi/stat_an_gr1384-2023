@@ -1,0 +1,777 @@
+\documentclass{article}
+\usepackage{ucs} 
+\usepackage[utf8x]{inputenc} % Включаем поддержку UTF8  
+\usepackage[russian,english]{babel}
+\usepackage{pgfplots}
+\usepackage{amsfonts} 
+\pgfplotsset{compat=1.9}
+
+\begin{document}
+\selectlanguage{russian}
+\textbf{Степаненко Денис (1384)}
+
+\begin{center}
+Лабораторная работа №1 "Исследование двумерного нормального распределения"\\
+\end{center}
+
+\textbf{Цель работы}\\
+Исследовать свойства двумерного случайного вектора имеющего нормальное распределение, овладеть навыками преобразования нормального вектора в стандартный и в вектор с независимыми компонентами.\\
+
+
+\textbf{Выполнение работы}\\
+Плотность двумерного нормального разпределениея имеет вид:
+$\rho_{\xi,\eta}(x,y)=C\cdot(exp(-\frac{1}{2}(3x^2+3xy+7y^2-9x+8y+13)))$\\
+
+1. Вычисление числовых характеристик СВ и построение графига его плотности распределения.\\
+ 
+$3x^2+3xy+7y^2-9x+8y+13 = 3(x^2+xy-3x)+7y^2+8y+13
+=3(x^2+2x(0.5y-1.5)+(0.5y-1.5)^2-(0.5y-1.5)^2)+7y^2+8y+13
+=3(x+0.5y-1.5)^2+7y^2+8y+13-\frac{3y^2}{4}+\frac{9y}{2}+\frac{27}{4}
+=3(x+0.5y-1.5)^2+\frac{25y^2+(32+18)y+(13\cdot14-27)}{4}
+=3(x+0.5y-1.5)^2+\frac{25y^2+50y+25}{4}
+=3(x+0.5y-1.5)^2+\frac{25}{4}(y+1)^2
+=3(x+\frac{1}{2}(y+1)-2)^2+\frac{25}{4}(y+1)^2
+=3[(x-2)^2+\frac{2}{2}(y+1)(x-2)+\frac{1}{4}(y+1)^2]+\frac{25}{4}(y+1)^2
+=3(x-2)^2+3(x-2)(y+1)+7(y+1)$\\
+
+$\mathbb{E}_{\xi,\eta}=\left({\begin{array}{c}
+    2\\
+    -1\\
+  \end{array} } \right)$\\
+  
+$\Sigma_{\xi,\eta}^{-1}=\left({\begin{array}{cc}
+    3 & 1.5\\
+    1,5 & 7\\
+  \end{array} } \right)$\\
+
+$\Sigma_{\xi,\eta}=\frac{4}{75}\left({\begin{array}{cc}
+    7 & -\frac{3}{2}\\
+     -\frac{3}{2} & 3\\
+  \end{array} } \right)$\\
+
+$\mathbb{D}_\xi=7$\\
+
+$\mathbb{D}_\eta=3$\\
+
+$\mathop{\mathrm{cov}}\nolimits(\xi, \eta)=-1.5$\\
+
+$\rho_{\xi,\eta}=\frac{\mathop{\mathrm{cov}}\nolimits(\xi, \eta)}{\sqrt[•]{\mathbb{D}_\xi\cdot\mathbb{D}_\eta}}=\frac{-1.5}{\sqrt[]{3\cdot7}}=-\frac{3}{2\sqrt[]{21}}$\\
+
+$C=\frac{1}{(2\pi)^{\left(\frac{n}{2}\right)}\sqrt[•]{\det\Sigma}}=\frac{1}{2\pi\sqrt[•]{21+2.25}}$\\
+
+$p_{\xi,\eta}(x,y)=\frac{1}{2\pi\sqrt[•]{23.25}}exp\left(
+-\frac{1}{2}
+\left[
+  	\left(
+  		{\begin{array}{c}
+    			x\\
+    			y\\
+  		\end{array}}
+  	\right)
+-
+  	\left(
+  		{\begin{array}{c}
+    			2\\
+    			-1\\
+  		\end{array}}
+  	\right)
+\right]^\top
+\left(
+	{\begin{array}{cc}
+  		3 & 1.5\\
+  		1,5 & 7\\
+	\end{array}}
+\right)
+\left[
+ 	 \left(
+  		{\begin{array}{c}
+    			x\\
+    			y\\
+  		\end{array}}
+  	\right)
+-
+  	\left(
+  		{\begin{array}{c}
+    			2\\
+    			-1\\
+  		\end{array}}
+  	\right)
+\right]
+\right)$\\
+
+
+График плотности распределения случайного вектора:
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[ 	
+	view={45}{20},
+	colormap/greenyellow,
+	colorbar
+]
+\addplot3[	
+	domain=0:4,
+	domain y = -2.3:0.3,
+	samples = 50,
+	samples y = 50,
+	surf] {1/sqrt(2*pi*23.25)*e^(-1/2*(3*x^2+3*x*y+7*y^2-9*x+8*y+13)};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+\newpage
+2. Нахождение афинного преобразования, приводящее исходный СВ в стандартный нормальный.\\
+
+Афинное преобразование - математическая операция, которая сопоставляет одно координатное пространство с другим. Формула афинного преобразования:
+$$ \vec{\xi_{st}}=A\vec{\xi}+B$$
+
+$3x^2+3xy+7y^2-9x+8y+13 = 3(x^2+xy-3x)+7y^2+8y+13
+=3(x^2+2x(0.5y-1.5)+(0.5y-1.5)^2-(0.5y-1.5)^2)+7y^2+8y+13
+=3(x+0.5y-1.5)^2+7y^2+8y+13-\frac{3y^2}{4}+\frac{9y}{2}+\frac{27}{4}
+=3(x+0.5y-1.5)^2+\frac{25y^2+(32+18)y+(13\cdot14-27)}{4}
+=3(x+0.5y-1.5)^2+\frac{25y^2+50y+25}{4}
+=3(x+0.5y-1.5)^2+\frac{25}{4}(y+1)^2=(\sqrt[•]{3}x+\frac{\sqrt[•]{3}}{2}y-\frac{3\sqrt[•]{3}}{2})^2+(\frac{5}{2}y+\frac{5}{2})^2$\\
+
+Таким образом, получается:
+$ 	\left(
+  		{\begin{array}{c}
+    			\xi_{st}\\
+    			\eta_{st}\\
+  		\end{array}}
+  	\right)
+  	=
+  	\left(
+  		{\begin{array}{cc}
+    			\sqrt[•]{3} & \frac{\sqrt[•]{3}}{2}\\
+    			0 & \frac{5}{2} \\
+  		\end{array}}
+  	\right)
+  	\left(
+  		{\begin{array}{c}
+    			\xi\\
+    			\eta\\
+  		\end{array}}
+  	\right)
+  	+
+  	\left(
+  		{\begin{array}{c}
+    			-\frac{3\sqrt[•]{3}}{2}\\
+    			\frac{5}{2}\\
+  		\end{array}}
+  	\right)
+$\\
+
+Чтобы показать, что вектор нормальный, необходимо убедиться в равенствах:
+
+$$\mathbb{E}_{\xi_{st},\eta_{st}}=
+\left({
+	\begin{array}{c}
+  		0\\
+  		0\\
+  	\end{array} } 
+\right)$$
+
+$$\Sigma_{\xi_{st},\eta_{st}}=
+\left(
+	{\begin{array}{cc}
+    1 & 0\\
+    0 & 1\\
+  \end{array}}
+\right)$$
+
+Итак, поехали:\\
+
+$\mathbb{E}_{\xi_{st},\eta_{st}}=
+\left(
+    {\begin{array}{cc}
+    	\sqrt[•]{3} & \frac{\sqrt[•]{3}}{2}\\
+    		0 & \frac{5}{2} \\
+  	\end{array}}
+\right)
+\left(
+	{\begin{array}{c}
+  		2\\
+  		-1\\
+  	\end{array}} 
+\right)
++
+\left(
+  	{\begin{array}{c}
+    		-\frac{3\sqrt[•]{3}}{2}\\
+    		\frac{5}{2}\\
+  	\end{array}}
+\right)
+=
+\left(
+	{\begin{array}{c}
+  		0\\
+  		0\\
+  	\end{array}} 
+\right)$\\
+
+$\Sigma_{\xi_{st},\eta_{st}}=\frac{4}{75\cdot4}
+  	\left(
+  		{\begin{array}{cc}
+    			2\sqrt[•]{3} & \sqrt[•]{3}\\
+    			0 & 5 \\
+  		\end{array}}
+  	\right)
+  	\left(
+		{\begin{array}{cc}
+    			7 & -\frac{3}{2}\\
+     		-\frac{3}{2} & 3\\
+  		\end{array}}
+  	\right)
+  	\left(
+  		{\begin{array}{cc}
+    			2\sqrt[•]{3} & 0\\
+    			\sqrt[•]{3} & 5 \\
+  		\end{array}}
+  	\right)
+  	=
+  	\left(
+  		{\begin{array}{cc}
+    			\frac{\sqrt[•]{3}}{2} & 0\\
+    			\frac{15}{2} & 15 \\
+  		\end{array}}
+  	\right)
+  	\left(
+  		{\begin{array}{cc}
+    			2\sqrt[•]{3} & 0\\
+    			\sqrt[•]{3} & 5 \\
+  		\end{array}}
+  	\right)
+  	= \frac{1}{75}
+  	\left(
+  		{\begin{array}{cc}
+    			75 & 0\\
+    			0 & 75 \\
+  		\end{array}}
+  	\right)=
+  	\left(
+  		{\begin{array}{cc}
+    			1 & 0\\
+    			0 & 1\\
+  		\end{array}}
+  	\right)
+$\\
+
+Таким образом, полученный вектор через афинно преоразование является стандарнтым нормальным СВ. \newpage
+
+3. Нахождение ортогонального преобразования, приводящего соответствующий центрированный СВ в вектор с независимыми компонентами. Построение графика плотности полученного распределения.\\
+
+Найдем определитель матрицы коварианций и прировняем его к 0.\\
+
+$\det(\Sigma^{-1}-\lambda E)=
+\det
+\left(
+  	{\begin{array}{cc}
+    		3-\lambda & 1.5\\
+    		1.5 & 7-\lambda\\
+  	\end{array}}
+\right)
+= (3-\lambda)\cdot(7-\lambda)-1.5^2=\lambda^2-10\lambda+18.75=0$\\
+
+Решая квадратное уравнение получаем собственные значения:
+$\lambda_{1}=\frac{15}{2}$
+$\lambda_{2}=\frac{5}{2}$\\
+
+Теперь найдем собственные векторы:\\
+
+1)Для собственного ветора $\lambda_{1}=7.5$:\\
+
+$$\left(
+  	{\begin{array}{cc}
+    		-4.5 & 1.5\\
+    		1.5 & -0.5\\
+  	\end{array}}
+\right)
+\left(
+  	{\begin{array}{c}
+    		v_{1x}\\
+    		v_{1y}\\
+  	\end{array}}
+\right)=
+\left(
+  	{\begin{array}{c}
+    		0\\
+    		0\\
+  	\end{array}}
+\right)
+$$
+Отсюда следует отношение: $v_{1y}=3v_{1x}$.\\
+Выберем значения собственного вектора:
+$v_{1}=\left(
+  	{\begin{array}{c}
+    		1\\
+    		3\\
+  	\end{array}}
+\right)$\\
+
+2)Для собственного ветора $\lambda_{2}=2.5$:\\
+
+$$\left(
+  	{\begin{array}{cc}
+    		0.5 & 1.5\\
+    		1.5 & 4.5\\
+  	\end{array}}
+\right)
+\left(
+  	{\begin{array}{c}
+    		v_{2x}\\
+    		v_{2y}\\
+  	\end{array}}
+\right)=
+\left(
+  	{\begin{array}{c}
+    		0\\
+    		0\\
+  	\end{array}}
+\right)
+$$
+Отсюда следует, что: $v_{2x}=-3v_{2y}$.\\
+Выберем значения собственного вектора:
+$v_{2}=\left(
+  	{\begin{array}{c}
+    		3\\
+    		-1\\
+  	\end{array}}
+\right)$\\
+
+Рассчитаем норму векторов: $\|v_{1}\|=\sqrt[•]{1^{2}+3^{2}}=\sqrt[•]{10}=\|v_{2}\|$\\
+
+Далее составим матрицу из собственных линейно независимыx векторов и величины, обратной норме:\\
+$$Q^\top=\frac{1}{\sqrt[•]{10}}
+\left(
+  	{\begin{array}{cc}
+    		1 & 3\\
+    		3 & -1\\
+  	\end{array}}
+\right)$$
+$$Q=\frac{1}{\sqrt[•]{10}}
+\left(
+  	{\begin{array}{cc}
+    		1 & 3\\
+    		3 & -1\\
+  	\end{array}}
+\right)$$
+
+Найдем значение СВ в ортогональной системе координат:
+$$\left(
+  	{\begin{array}{c}
+    		\xi_{ort}\\
+    		\eta_{ort}\\
+  	\end{array}}
+\right)=Q
+\left(
+  	{\begin{array}{c}
+    		\xi\\
+    		\eta\\
+  	\end{array}}
+\right)=
+\left(
+  	{\begin{array}{c}
+    		\xi+3\eta\\
+    		3\eta-\xi\\
+  	\end{array}}
+\right)$$
+
+А также некоторые числовые характеристики:
+
+1)Учитывая, что 
+$\mu_{ист}=
+\left(
+    {\begin{array}{c}
+    		2\\
+    		1\\
+  	\end{array}}
+\right)
+$
+найдем математическое ожидание СВ в ортогональной СК путем домножение на матрицу $Q$ слева:
+$$\mathbb{E}_{\xi_{ort},\eta_{ort}}=Q\mu=
+\left(
+    {\begin{array}{cc}
+    		1 & 3\\
+    		3 & -1\\
+  	\end{array}}
+\right)
+\left(
+    {\begin{array}{c}
+    		2\\
+    		1\\
+  	\end{array}}
+\right)=
+\left(
+    {\begin{array}{c}
+    		5\\
+    		5\\
+  	\end{array}}
+\right)$$
+
+2)Маттрица ковариаций:\\
+$\Sigma_{ort}=Q\Sigma Q^\top=
+\frac{4}{750}
+\left(
+  	{\begin{array}{cc}
+    		1 & 3\\
+    		3 & -1\\
+  	\end{array}}
+\right)
+\left(
+	{\begin{array}{cc}
+    		7 & -\frac{3}{2}\\
+     	-\frac{3}{2} & 3\\
+  	\end{array}} 
+\right)
+\left(
+  	{\begin{array}{cc}
+    		1 & 3\\
+    		3 & -1\\
+  	\end{array}}
+\right)=\frac{4}{750}
+\left(
+  	{\begin{array}{cc}
+    		2.5 & 7.5\\
+    		22.5 & -7.5\\
+  	\end{array}}
+\right)
+\left(
+  	{\begin{array}{cc}
+    		1 & 3\\
+    		3 & -1\\
+  	\end{array}}
+\right)=\frac{4}{750}
+\left(
+  	{\begin{array}{cc}
+    		25 & 0\\
+    		0 & 75\\
+  	\end{array}}
+\right)=
+\left(
+  	{\begin{array}{cc}
+    		\frac{2}{15} & 0\\
+    		0 & \frac{2}{5}\\
+  	\end{array}}
+\right)
+$\\
+
+
+3) Обратная (для построения уравнения плотности распределения):\\
+$\Sigma_{ort}^{-1}=
+\left(
+    {\begin{array}{cc}
+    		\lambda_{1} & 0\\
+    		0 & \lambda_{2}\\
+  	\end{array}}
+\right)=
+\left(
+    {\begin{array}{cc}
+    		7.5 & 0\\
+    		0 & 2.5\\
+  	\end{array}}
+\right)$\\
+
+Составим уравнение плотности распределения, используя полученные величины:
+
+$p_{\xi,\eta}=\frac{\sqrt[•]{750}}{4\pi}exp\left(
+-\frac{1}{2}
+\left[
+  	\left(
+  		{\begin{array}{c}
+    			x\\
+    			y\\
+  		\end{array}}
+  	\right)
+-
+  	\left(
+  		{\begin{array}{c}
+    			5\\
+    			5\\
+  		\end{array}}
+  	\right)
+\right]^\top
+\left(
+	{\begin{array}{cc}
+  		7.5 & 0\\
+  		0 & 2.5\\
+	\end{array}}
+\right)
+\left[
+ 	 \left(
+  		{\begin{array}{c}
+    			x\\
+    			y\\
+  		\end{array}}
+  	\right)
+-
+  	\left(
+  		{\begin{array}{c}
+    			5\\
+    			5\\
+  		\end{array}}
+  	\right)
+\right]
+\right)
+=
+\frac{\sqrt[•]{750}}{4\pi}exp\left(
+-\frac{1}{2}
+\left(
+	{\begin{array}{cc}
+  		7.5(x-5) & 2.5(y-5)\\
+	\end{array}}
+\right)
+\left(
+  	{\begin{array}{c}
+    		x-5\\
+    		y-5\\
+  	\end{array}}
+\right)
+\right)
+=
+\frac{\sqrt[•]{750}}{4\pi}exp\left(-\frac{1}{2}(7.5x^2-75x+2.5y^2-25y+250)\right)$\\
+
+График плотности распредления:\\
+
+\begin{tikzpicture}
+\begin{axis}[ 	
+	view={45}{20},
+	colormap/cool,
+	colorbar
+]
+\addplot3[	
+	domain=3.5:6.5,
+	domain y = 2.5:7.5,
+	samples = 50,
+	samples y = 50,
+	surf] {sqrt(750)/(4*pi)*e^(-1/2*(7.5*x^2+2.5*y^2-75*x-25*y+250)};
+\end{axis}
+\end{tikzpicture}
+
+\newpage
+
+4. Вычисление характеристик распределения случайного вектора $(-5\xi+5\eta, -5\xi+4\eta)^\top$. Нахождение формулы и построение графика плотности распределения полученного СВ.\\
+
+$\left(
+  	{\begin{array}{c}
+    		\xi_{4}\\
+    		\eta_{4}\\
+  	\end{array}}
+\right)
+=
+\left(
+  	{\begin{array}{c}
+    		-5\xi+4\eta\\
+    		-5\xi+4\eta\\
+  	\end{array}}
+\right)
+$\\
+
+$
+\left(
+  	{\begin{array}{cc}
+    	-5 & 4\\
+    	-5 & 4\\
+  	\end{array}}
+\right)
+\cdot
+\left(
+  	{\begin{array}{c}
+    		\xi\\
+    		\eta\\
+  	\end{array}}
+\right)
+$
+
+$\det A=0$, заменим ее на другую матрицу:
+$\left(
+  	{\begin{array}{c}
+    		\xi_{4}\\
+    		\eta_{4}\\
+  	\end{array}}
+\right)
+=
+\left(
+  	{\begin{array}{c}
+    		-5\xi-4\eta\\
+    		-5\xi+4\eta\\
+  	\end{array}}
+\right)
+$
+
+Продолжим:\\
+
+$\mathbb{E}_{\xi_{4},\eta_{4}}=A\cdot \mathbb{E}_{\xi,\eta}=
+\left(
+  	{\begin{array}{cc}
+    	-5 & -4\\
+    	-5 & 4\\
+  	\end{array}}
+\right)
+\left(
+  	{\begin{array}{c}
+    		2\\
+    		-1\\
+  	\end{array}}
+\right)=
+\left(
+  	{\begin{array}{c}
+    		-6\\
+    		-14\\
+  	\end{array}}
+\right)$\\
+
+$\Sigma_{\xi_{4},\eta_{4}}=A\cdot\Sigma\cdot A^\top=\frac{4}{75}
+\left(
+	{\begin{array}{cc}
+    		-5 & -4\\
+     	-5 & 4\\
+  	\end{array}} 
+\right)
+\left(
+	{\begin{array}{cc}
+    		7 & -\frac{3}{2}\\
+     	-\frac{3}{2} & 3\\
+  	\end{array}} 
+\right)
+\left(
+	{\begin{array}{cc}
+    		-5 & -5\\
+     	-4 & 4\\
+  	\end{array}} 
+\right)=\frac{4}{75}
+\left(
+	{\begin{array}{cc}
+    		-29 & -4.5\\
+     	-41 & 19.5\\
+  	\end{array}} 
+\right)
+\left(
+	{\begin{array}{cc}
+    		-5 & -5\\
+     	-4 & 4\\
+  	\end{array}} 
+\right)=\frac{4}{75}
+\left(
+	{\begin{array}{cc}
+    		163 & 127\\
+     	127 & 283\\
+  	\end{array}} 
+\right)
+$\\
+
+$\Sigma_{\xi_{4},\eta_{4}}^{-1}=\frac{1}{1600}\left({\begin{array}{cc}
+    283 & -127\\
+    -127 & 163\\
+  \end{array} } \right)$\\
+
+$\mathbb{D}_{\xi_4}=\frac{163\cdot4}{75}=\frac{652}{75}$\\
+
+$\mathbb{D}_{\eta_4}=\frac{283\cdot4}{75}=\frac{1132}{75}$\\
+
+$\mathop{\mathrm{cov}}\nolimits(\xi_{4}, \eta_{4})=\frac{127\cdot4}{75}=\frac{508}{75}$\\
+
+$\rho_{\xi_{4},\eta_{4}}=\frac{\mathop{\mathrm{cov}}\nolimits(\xi_{4}, \eta_{4})}{\sqrt[•]{\mathbb{D}_{\xi_{4}}\cdot\mathbb{D}_{\eta_{4}}}}=\frac{508}{\sqrt[]{652\cdot1132}}=\frac{508}{\sqrt[•]{738064}}$\\
+
+$C=\frac{1}{(2\pi)^{\left(\frac{n}{2}\right)}\sqrt[•]{\det\Sigma}}=\frac{1}{2\pi\sqrt[•]{1600}}=\frac{1}{800\pi}$\\
+
+$\rho_{\xi_{4},\eta_{4}}(x,y)=\frac{1}{800\pi}exp\left(
+-\frac{1}{2}
+\left[
+  	\left(
+  		{\begin{array}{c}
+    			x\\
+    			y\\
+  		\end{array}}
+  	\right)
+-
+  	\left(
+  		{\begin{array}{c}
+    			-6\\
+    			-14\\
+  		\end{array}}
+  	\right)
+\right]^\top
+\frac{1}{1600}
+\left(
+	{\begin{array}{cc}
+  		283 & -127\\
+  		-127 & 163\\
+	\end{array}}
+\right)
+\left[
+ 	 \left(
+  		{\begin{array}{c}
+    			x\\
+    			y\\
+  		\end{array}}
+  	\right)
+-
+  	\left(
+  		{\begin{array}{c}
+    			-6\\
+    			-14\\
+  		\end{array}}
+  	\right)
+\right]
+\right)
+=
+\frac{1}{800\pi}exp\left(
+-\frac{1}{3200}
+  	\left(
+  		{\begin{array}{c}
+    			283x-127y+1698-1778\\
+    			163y-127x+2282-762\\
+  		\end{array}}
+  	\right)^\top
+  	\left(
+  		{\begin{array}{c}
+    			x+6\\
+    			y+14\\
+  		\end{array}}
+  	\right)
+\right)
+=$\\
+$\frac{1}{800\pi}exp\left(-\frac{1}{3200}(283x^2-254xy-160x+163y^2+3040y+20800)\right)$\\
+
+График плотности распределения:\\
+
+\begin{tikzpicture}
+\begin{axis}[ 	
+	view={45}{20},
+	colormap/violet,
+	colorbar
+]
+\addplot3[	
+	domain=-16:4,
+	domain y = -24:-4,
+	samples = 50,
+	samples y = 50,
+	surf] {1/sqrt(800*pi)*e^(-1/3200*(283*x^2-254*x*y+163*y^2
+	-160*x+3050*y+20800)};
+\end{axis}
+\end{tikzpicture}
+\newpage
+
+5. Нахождение условного распределения $\xi$ при условии $\eta$. Вычисление математического ожидания и дисперсии.\\
+
+Для нахождения условного распределения воспользуемся формулой:$$\rho_{\xi|\eta=y}(x)=\frac{\rho_{\xi,\eta}(x,y)}{\rho_{\eta}(y)},$$ где $\rho_{\eta}(y)$ можно найти по формуле:
+$$\int_{-\infty}^\infty\rho_{\xi,\eta}(x,y)dy$$
+
+Давайте вычислим интеграл:\\
+
+$\int_{-\infty}^\infty \frac{1}{2\pi\sqrt[•]{23.25}}exp(-\frac{1}{2}(3x^2+3xy+7y^2-9x+8y+13))dy=\frac{1}{\sqrt[•]{2\pi\cdot7\cdot23.25}}exp(-\frac{75}{56}(x-2)^2)$\\
+ 
+Получили распределение случайной величины $\eta$. Теперь найдем условное распределение\\
+
+$\rho_{\xi|\eta=y}(x)= \frac{\frac{1}{2\pi\sqrt[•]{23.25}}exp(-\frac{1}{2}(3x^2+3xy+7y^2-9x+8y+13))}{\frac{1}{\sqrt[•]{2\pi\cdot7\cdot23.25}}exp(-\frac{75}{56}(x-2)^2)}=\sqrt[•]{\frac{7}{2\pi}}exp(-\frac{1}{56}(9x^2+84x+48x+196y^2+224y+64))$\\
+
+Далее вычислим дисперсию и математисеское ожидание для полученного условного распределения:\\
+
+$\mathbb{E}_{\xi|\eta=y}=\int_\mathbb{R}x\cdot\rho_{\xi|\eta=y}(x)dx=\int_{-\infty}^\infty x\cdot\sqrt[•]{\frac{7}{2\pi}}exp(-\frac{1}{56}(9x^2+84x+48x+196y^2+224y+64))=-\frac{44}{9}\sqrt[•]{14\pi} exp(-\frac{1}{2}(y-1)(7y+15))$\\
+
+$\mathbb{D}_{\xi|\eta=y}=\int_\mathbb{R}x^2\cdot\rho_{\xi|\eta=y}(x)dx=\int_{-\infty}^\infty x^2\cdot\sqrt[•]{\frac{7}{2\pi}}exp(-\frac{1}{56}(9x^2+84x+48x+196y^2+224y+64))=\frac{1024}{27}\sqrt[•]{14\pi} exp(-\frac{1}{2}(y-1)(7y+15))$\\
+\newpage
+\textbf{Выводы}\\
+В ходе выполнения лабораторной работы было изучено многомерное нормальное распределение, уравнение его плотности распределения, основные числовые характеристики, свойтсва. Также были закреплены навыки вычисления числовых характеристик многомерного СВ и построение графиков его распределения. Таким образом, мы провели афинное преобразование, нашли ортогональное преобразование, описали два новых случайных распределения, одним из которых было условное.
+
+\end{document}
