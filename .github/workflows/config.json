@@ -15,6 +15,10 @@
     "lab1": {
       "deadline":"2023-09-30",
       "kernel":["R", "python", "Python 3", "octave", "matlab", "sage"]
+    },
+    "lab2": {
+      "deadline":"2023-12-02",
+      "kernel":["R", "Python 3", "python", "octave", "matlab", "sage"]
     }
   }
 }
